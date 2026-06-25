@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book Drive 2026 — Delegate Registration</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0D1F3C; --blue: #185FA5; --blue-light: #E6F1FB;
+    --amber: #E8A020; --amber-light: #FDF3E0;
+    --green: #2D7A4F; --green-light: #EAF3DE;
+    --red: #B83232; --red-light: #FCEBEB;
+    --purple: #6B3FA0; --purple-light: #F0EAF9;
+    --ink: #1A1A2E; --muted: #6B7280; --border: #E2E8F0;
+    --surface: #F8FAFC; --white: #FFFFFF;
+    --radius: 10px; --radius-lg: 16px;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: var(--surface); color: var(--ink); min-height: 100vh; }
+
+  nav { background: var(--navy); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 50; }
+  .nav-logo { display: flex; align-items: center; gap: 10px; color: white; font-size: 15px; font-weight: 600; }
+  .nav-logo span { color: var(--amber); }
+  .nav-tabs { display: flex; gap: 4px; }
+  .nav-tab { padding: 6px 16px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.6); background: none; border: none; border-radius: 6px; cursor: pointer; transition: background 0.15s, color 0.15s; }
+  .nav-tab:hover { background: rgba(255,255,255,0.08); color: white; }
+  .nav-tab.active { background: rgba(255,255,255,0.15); color: white; }
+  .admin-btn { font-size: 11px; padding: 4px 12px; background: var(--amber); color: var(--navy); border-radius: 20px; font-weight: 600; cursor: pointer; border: none; }
+
+  .view { display: none; } .view.active { display: block; }
+
+  /* HERO */
+  .hero { background: var(--navy); padding: 3.5rem 2rem 4rem; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: '📚'; position: absolute; font-size: 200px; opacity: 0.04; top: -20px; left: 50%; transform: translateX(-50%); pointer-events: none; }
+  .hero-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber); margin-bottom: 12px; }
+  .hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 5vw, 3rem); color: white; line-height: 1.15; margin-bottom: 14px; }
+  .hero h1 em { color: var(--amber); font-style: normal; }
+  .hero p { font-size: 15px; color: rgba(255,255,255,0.65); max-width: 460px; margin: 0 auto; line-height: 1.6; }
+  .hero-meta { display: flex; gap: 24px; justify-content: center; margin-top: 2rem; flex-wrap: wrap; }
+  .hero-meta-item { font-size: 13px; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 6px; }
+  .hero-meta-item strong { color: rgba(255,255,255,0.85); }
+
+  /* SHARED FORM */
+  .form-wrap { max-width: 660px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  .form-card { background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 2rem; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+  .form-card h2 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .form-card .subtitle { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; }
+  .section-divider { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 1.5rem 0 1rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+  .field { margin-bottom: 1rem; }
+  .field label { display: block; font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 5px; }
+  .field label .req { color: var(--blue); }
+  .field input, .field select, .field textarea { width: 100%; font-size: 14px; font-family: 'Inter', sans-serif; padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--white); color: var(--ink); transition: border-color 0.15s, box-shadow 0.15s; outline: none; }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(24,95,165,0.1); }
+  .field textarea { resize: vertical; min-height: 75px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .submit-btn { width: 100%; padding: 13px; font-size: 15px; font-weight: 600; font-family: 'Inter', sans-serif; background: var(--navy); color: white; border: none; border-radius: var(--radius); cursor: pointer; margin-top: 1.5rem; }
+  .submit-btn:hover { background: var(--blue); }
+  .success-banner { display: none; background: var(--green-light); border: 1px solid #A3D4B8; color: var(--green); border-radius: var(--radius); padding: 13px 16px; font-size: 14px; font-weight: 500; margin-bottom: 1.25rem; }
+  .err-msg { display: none; color: var(--red); font-size: 13px; margin-top: 10px; padding: 10px 14px; background: var(--red-light); border-radius: var(--radius); }
+
+  /* DELEGATE TYPE TOGGLE */
+  .type-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
+  .type-card { border: 2px solid var(--border); border-radius: var(--radius); padding: 1rem; cursor: pointer; text-align: center; transition: border-color 0.15s, background 0.15s; }
+  .type-card:hover { border-color: var(--blue); }
+  .type-card.selected { border-color: var(--blue); background: var(--blue-light); }
+  .type-card .type-icon { font-size: 26px; margin-bottom: 6px; }
+  .type-card .type-label { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .type-card .type-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .school-section { display: none; background: var(--purple-light); border: 1px solid #D4C2EE; border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; }
+  .school-section .school-header { font-size: 13px; font-weight: 600; color: var(--purple); margin-bottom: 1rem; display: flex; align-items: center; gap: 6px; }
+  .grade-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 6px; }
+  .grade-check { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 500; color: var(--ink); cursor: pointer; background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; transition: border-color 0.15s, background 0.15s; }
+  .grade-check:hover { border-color: var(--purple); }
+  .grade-check input[type="checkbox"] { accent-color: var(--purple); width: 15px; height: 15px; flex-shrink: 0; cursor: pointer; }
+  .grade-check:has(input:checked) { border-color: var(--purple); background: var(--purple-light); }
+
+  /* DELEGATE DASHBOARD */
+  .delegate-dash { max-width: 680px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  .lookup-card { background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 2rem; box-shadow: 0 1px 4px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
+  .lookup-card h2 { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+  .lookup-card p { font-size: 13px; color: var(--muted); margin-bottom: 1.25rem; }
+  .lookup-row { display: flex; gap: 10px; }
+  .lookup-row input { flex: 1; font-size: 14px; font-family: 'Inter', sans-serif; padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius); outline: none; }
+  .lookup-row input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(24,95,165,0.1); }
+  .lookup-btn { font-size: 14px; font-weight: 600; font-family: 'Inter', sans-serif; padding: 9px 20px; background: var(--navy); color: white; border: none; border-radius: var(--radius); cursor: pointer; white-space: nowrap; }
+  .lookup-btn:hover { background: var(--blue); }
+  .lookup-err { display: none; font-size: 13px; color: var(--red); margin-top: 10px; }
+  .delegate-profile { background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--border); overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.05); display: none; }
+  .profile-header { background: var(--navy); padding: 1.5rem 2rem; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .profile-avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--amber); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: var(--navy); flex-shrink: 0; }
+  .profile-name { color: white; font-size: 18px; font-weight: 600; }
+  .profile-org { color: rgba(255,255,255,0.6); font-size: 13px; margin-top: 2px; }
+  .profile-status-wrap { margin-left: auto; }
+  .status-pill { display: inline-block; font-size: 12px; font-weight: 600; padding: 5px 14px; border-radius: 20px; }
+  .s-registered { background: var(--blue-light); color: var(--blue); }
+  .s-checkedin { background: var(--green-light); color: var(--green); }
+  .s-noshow { background: var(--red-light); color: var(--red); }
+  .profile-body { padding: 1.5rem 2rem; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem; }
+  .detail-item .d-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 3px; }
+  .detail-item .d-val { font-size: 14px; color: var(--ink); font-weight: 500; }
+  .school-info-box { background: var(--purple-light); border: 1px solid #D4C2EE; border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+  .school-info-box .si-title { font-size: 12px; font-weight: 600; color: var(--purple); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+  .school-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .profile-note { background: var(--surface); border-radius: var(--radius); padding: 12px 14px; font-size: 13px; color: var(--muted); border: 1px solid var(--border); }
+  .event-strip { background: var(--amber-light); border-top: 1px solid #F5D99A; padding: 1rem 2rem; font-size: 13px; color: #7A5010; }
+
+  /* ADMIN LOGIN */
+  .login-wrap { max-width: 400px; margin: 5rem auto; padding: 0 1.5rem; }
+  .login-card { background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 2.5rem 2rem; box-shadow: 0 2px 12px rgba(0,0,0,0.08); text-align: center; }
+  .login-card .lock-icon { font-size: 40px; margin-bottom: 1rem; }
+  .login-card h2 { font-size: 20px; font-weight: 600; margin-bottom: 6px; }
+  .login-card p { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; }
+  .login-field { text-align: left; margin-bottom: 1rem; }
+  .login-field label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 5px; }
+  .login-field input { width: 100%; font-size: 14px; font-family: 'Inter', sans-serif; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); outline: none; }
+  .login-field input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(24,95,165,0.1); }
+  .login-btn { width: 100%; padding: 12px; font-size: 15px; font-weight: 600; font-family: 'Inter', sans-serif; background: var(--navy); color: white; border: none; border-radius: var(--radius); cursor: pointer; margin-top: 0.5rem; }
+  .login-btn:hover { background: var(--blue); }
+  .login-err { display: none; font-size: 13px; color: var(--red); background: var(--red-light); padding: 10px 14px; border-radius: var(--radius); margin-top: 10px; }
+
+  /* ADMIN DASHBOARD */
+  .admin-notice { background: #FDF3E0; border-bottom: 1px solid #F5D99A; padding: 10px 2rem; display: flex; align-items: center; gap: 10px; font-size: 13px; color: #7A5010; flex-wrap: wrap; }
+  .admin-notice strong { font-weight: 600; }
+  .dash-wrap { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  .dash-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 12px; }
+  .dash-top h2 { font-size: 20px; font-weight: 600; }
+  .dash-top p { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .dash-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn-outline { font-size: 13px; font-weight: 500; font-family: 'Inter', sans-serif; padding: 8px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--white); color: var(--ink); cursor: pointer; }
+  .btn-outline:hover { border-color: var(--blue); color: var(--blue); }
+  .btn-primary { font-size: 13px; font-weight: 600; font-family: 'Inter', sans-serif; padding: 8px 16px; border: none; border-radius: var(--radius); background: var(--navy); color: white; cursor: pointer; }
+  .btn-primary:hover { background: var(--blue); }
+  .btn-danger { font-size: 13px; font-weight: 500; font-family: 'Inter', sans-serif; padding: 8px 14px; border: 1px solid #E2B4B4; border-radius: var(--radius); background: var(--white); color: var(--red); cursor: pointer; }
+  .btn-danger:hover { background: var(--red-light); }
+  .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 1.75rem; }
+  .metric-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.1rem 1.25rem; }
+  .metric-card .m-val { font-size: 30px; font-weight: 600; color: var(--ink); line-height: 1; }
+  .metric-card .m-lbl { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .metric-card.t-blue { border-top: 3px solid var(--blue); }
+  .metric-card.t-green { border-top: 3px solid var(--green); }
+  .metric-card.t-red { border-top: 3px solid var(--red); }
+  .metric-card.t-amber { border-top: 3px solid var(--amber); }
+  .metric-card.t-purple { border-top: 3px solid var(--purple); }
+  .filter-bar { display: flex; gap: 10px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .filter-bar input, .filter-bar select { font-size: 13px; font-family: 'Inter', sans-serif; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--white); color: var(--ink); outline: none; }
+  .filter-bar input:focus, .filter-bar select:focus { border-color: var(--blue); }
+  .filter-bar input { flex: 1; min-width: 160px; }
+  .table-wrap { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 10px 14px; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; background: var(--surface); border-bottom: 1px solid var(--border); white-space: nowrap; }
+  td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--ink); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #FAFBFD; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px; }
+  .b-registered { background: var(--blue-light); color: var(--blue); }
+  .b-checkedin { background: var(--green-light); color: var(--green); }
+  .b-noshow { background: var(--red-light); color: var(--red); }
+  .b-books { background: var(--amber-light); color: #7A5010; }
+  .b-school { background: var(--purple-light); color: var(--purple); }
+  .b-individual { background: var(--surface); color: var(--muted); border: 1px solid var(--border); }
+  .status-sel { font-size: 12px; font-weight: 500; font-family: 'Inter', sans-serif; padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--white); color: var(--ink); cursor: pointer; outline: none; }
+  .empty-state { text-align: center; padding: 3rem 1rem; color: var(--muted); }
+  .empty-state .icon { font-size: 36px; margin-bottom: 10px; }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(13,31,60,0.55); z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--white); border-radius: var(--radius-lg); padding: 2rem; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 32px rgba(0,0,0,0.18); }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+  .modal-header h3 { font-size: 17px; font-weight: 600; }
+  .modal-close { background: none; border: none; font-size: 22px; color: var(--muted); cursor: pointer; }
+  .modal-close:hover { color: var(--ink); }
+  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.25rem; }
+  .modal-school { background: var(--purple-light); border: 1px solid #D4C2EE; border-radius: var(--radius); padding: 1rem; margin-top: 0.75rem; display: none; }
+  .modal-school .ms-label { font-size: 12px; font-weight: 600; color: var(--purple); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.75rem; }
+
+  footer { background: var(--navy); color: rgba(255,255,255,0.45); text-align: center; padding: 1.5rem; font-size: 12px; }
+  footer strong { color: rgba(255,255,255,0.7); }
+
+  @media (max-width: 560px) {
+    .row2, .row3, .detail-grid, .school-info-grid { grid-template-columns: 1fr; }
+    .hero { padding: 2.5rem 1.25rem 3rem; }
+    .form-card, .lookup-card { padding: 1.25rem; }
+    .profile-body { padding: 1.25rem; }
+    nav { padding: 0 1rem; }
+    .nav-tab { padding: 6px 10px; font-size: 12px; }
+    .lookup-row { flex-direction: column; }
+    .type-toggle { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">📚 <span>Book Drive</span> 2026</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchView('register', this)">Register</button>
+    <button class="nav-tab" onclick="switchView('my-dashboard', this)">My registration</button>
+  </div>
+  <button class="admin-btn" onclick="showAdminGate()">Admin ↗</button>
+</nav>
+
+<!-- ══════ VIEW: REGISTER ══════ -->
+<div class="view active" id="view-register">
+  <div class="hero">
+    <div class="hero-eyebrow">Saturday, 25 July 2026 · Nairobi</div>
+    <h1>Register for the<br><em>Book Drive</em></h1>
+    <p>Join us as we put books into the hands of those who need them most. Register below and let us know what you're bringing.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">📅 <strong>Saturday, 25 July 2026</strong></div>
+      <div class="hero-meta-item">📍 <strong>Nairobi, Kenya</strong></div>
+      <div class="hero-meta-item">📚 <strong>Bring your books</strong></div>
+    </div>
+  </div>
+
+  <div class="form-wrap" id="reg-form">
+    <div class="form-card">
+      <h2>Delegate registration</h2>
+      <p class="subtitle">Registering as an individual or bringing a school group? Select below.</p>
+      <div id="regSuccess" class="success-banner">✅ You're registered! Use <strong>"My registration"</strong> in the nav to look up your details with your email.</div>
+
+      <!-- TYPE TOGGLE -->
+      <div class="type-toggle">
+        <div class="type-card selected" id="typeIndividual" onclick="setType('individual')">
+          <div class="type-icon">🙋</div>
+          <div class="type-label">Individual</div>
+          <div class="type-desc">Registering just yourself</div>
+        </div>
+        <div class="type-card" id="typeSchool" onclick="setType('school')">
+          <div class="type-icon">🏫</div>
+          <div class="type-label">School group</div>
+          <div class="type-desc">Bringing children from a school</div>
+        </div>
+      </div>
+
+      <div class="section-divider">Your personal details</div>
+      <div class="row2">
+        <div class="field"><label>First name <span class="req">*</span></label><input type="text" id="r_fname" placeholder="Amara"></div>
+        <div class="field"><label>Last name <span class="req">*</span></label><input type="text" id="r_lname" placeholder="Osei"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>Phone number <span class="req">*</span></label><input type="tel" id="r_phone" placeholder="+254 700 000 000"></div>
+        <div class="field"><label>Email address <span class="req">*</span></label><input type="email" id="r_email" placeholder="you@example.com"></div>
+      </div>
+      <div class="field" id="orgFieldWrap">
+        <label>Organisation / School name <span class="req">*</span></label>
+        <input type="text" id="r_org" placeholder="e.g. University of Nairobi">
+      </div>
+
+      <!-- SCHOOL GROUP SECTION -->
+      <div class="school-section" id="schoolSection">
+        <div class="school-header">🏫 School group details</div>
+        <div class="field"><label>School name <span class="req">*</span></label><input type="text" id="r_school" placeholder="e.g. Nairobi Primary School"></div>
+        <div class="field"><label>Teacher / Chaperone name <span class="req">*</span></label><input type="text" id="r_teacher" placeholder="Full name of teacher or chaperone in charge"></div>
+        <div class="field"><label>Number of children <span class="req">*</span></label><input type="number" id="r_childcount" placeholder="e.g. 30" min="1"></div>
+        <div class="field">
+          <label>Grade(s) / Class(es) attending <span class="req">*</span></label>
+          <div class="grade-grid">
+            <label class="grade-check"><input type="checkbox" name="r_grade" value="PP1"> PP1</label>
+            <label class="grade-check"><input type="checkbox" name="r_grade" value="PP2"> PP2</label>
+            <label class="grade-check"><input type="checkbox" name="r_grade" value="Grade 1"> Grade 1</label>
+            <label class="grade-check"><input type="checkbox" name="r_grade" value="Grade 2"> Grade 2</label>
+            <label class="grade-check"><input type="checkbox" name="r_grade" value="Grade 3"> Grade 3</label>
+            <label class="grade-check"><input type="checkbox" name="r_grade" value="Grade 4"> Grade 4</label>
+            <label class="grade-check"><input type="checkbox" name="r_grade" value="Grade 5"> Grade 5</label>
+            <label class="grade-check"><input type="checkbox" name="r_grade" value="Grade 6"> Grade 6</label>
+            <label class="grade-check" id="otherGradeCheck"><input type="checkbox" name="r_grade" value="Other" onchange="toggleOtherGrade(this)"> Other</label>
+          </div>
+          <input type="text" id="r_grade_other" placeholder="Specify additional grades..." style="display:none;margin-top:8px;">
+        </div>
+      </div>
+
+      <div class="section-divider">Book donation</div>
+      <div class="row2" id="booksRow">
+        <div class="field">
+          <label>Books pledged</label>
+          <input type="number" id="r_books" placeholder="e.g. 10" min="0">
+          <p class="hint">How many books do you plan to bring?</p>
+        </div>
+        <div class="field"><label>Expected arrival time</label><input type="time" id="r_arrival"></div>
+      </div>
+
+      <div class="section-divider">Additional info</div>
+      <div class="field"><label>Notes or special requirements</label><textarea id="r_notes" placeholder="Dietary needs, accessibility requirements, or anything else..."></textarea></div>
+
+      <div id="regErr" class="err-msg"></div>
+      <button class="submit-btn" onclick="submitReg()">Complete registration →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ VIEW: MY DASHBOARD ══════ -->
+<div class="view" id="view-my-dashboard">
+  <div class="delegate-dash">
+    <div class="lookup-card">
+      <h2>View your registration</h2>
+      <p>Enter the email address you registered with to pull up your details.</p>
+      <div class="lookup-row">
+        <input type="email" id="lookupEmail" placeholder="your@email.com" onkeydown="if(event.key==='Enter') lookupDelegate()">
+        <button class="lookup-btn" onclick="lookupDelegate()">Look up →</button>
+      </div>
+      <div id="lookupErr" class="lookup-err">No registration found for that email. Double-check and try again.</div>
+    </div>
+
+    <div class="delegate-profile" id="delegateProfile">
+      <div class="profile-header">
+        <div class="profile-avatar" id="profileInitials">??</div>
+        <div>
+          <div class="profile-name" id="profileName">—</div>
+          <div class="profile-org" id="profileOrg">—</div>
+        </div>
+        <div class="profile-status-wrap">
+          <span class="status-pill" id="profileStatus">—</span>
+        </div>
+      </div>
+      <div class="profile-body">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="d-label">Phone</div><div class="d-val" id="pPhone">—</div></div>
+          <div class="detail-item"><div class="d-label">Email</div><div class="d-val" id="pEmail">—</div></div>
+          <div class="detail-item"><div class="d-label">Books pledged</div><div class="d-val" id="pBooks">—</div></div>
+          <div class="detail-item"><div class="d-label">Expected arrival</div><div class="d-val" id="pArrival">—</div></div>
+          <div class="detail-item"><div class="d-label">Delegate type</div><div class="d-val" id="pType">—</div></div>
+          <div class="detail-item"><div class="d-label">Registered at</div><div class="d-val" id="pTimestamp">—</div></div>
+        </div>
+
+        <!-- School info shown only for school groups -->
+        <div id="pSchoolBox" class="school-info-box" style="display:none">
+          <div class="si-title">🏫 School group details</div>
+          <div class="school-info-grid">
+            <div class="detail-item"><div class="d-label">School</div><div class="d-val" id="pSchool">—</div></div>
+            <div class="detail-item"><div class="d-label">Teacher / Chaperone</div><div class="d-val" id="pTeacher">—</div></div>
+            <div class="detail-item"><div class="d-label">No. of children</div><div class="d-val" id="pChildCount">—</div></div>
+            <div class="detail-item"><div class="d-label">Grade / Class</div><div class="d-val" id="pGrade">—</div></div>
+          </div>
+        </div>
+
+        <div id="pNotesWrap" style="display:none">
+          <div class="d-label" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:6px;">Notes</div>
+          <div class="profile-note" id="pNotes"></div>
+        </div>
+      </div>
+      <div class="event-strip">
+        📅 <strong>Saturday, 25 July 2026</strong> · Nairobi, Kenya · Please arrive at your selected time and check in at the registration desk.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ VIEW: ADMIN LOGIN ══════ -->
+<div class="view" id="view-admin-login">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="lock-icon">🔒</div>
+      <h2>Admin access</h2>
+      <p>This area is for organisers only. Enter the password to continue.</p>
+      <div class="login-field">
+        <label>Password</label>
+        <input type="password" id="adminPwInput" placeholder="Enter password" onkeydown="if(event.key==='Enter') checkAdminLogin()">
+      </div>
+      <button class="login-btn" onclick="checkAdminLogin()">Sign in →</button>
+      <div id="loginErr" class="login-err">Incorrect password. Please try again.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ VIEW: ADMIN DASHBOARD ══════ -->
+<div class="view" id="view-admin">
+  <div class="admin-notice">
+    🔒 <strong>Admin view</strong> — organisers only. Do not share this screen publicly.
+    <button onclick="logoutAdmin()" class="btn-danger" style="margin-left:auto;font-size:12px;padding:4px 12px;">Sign out</button>
+  </div>
+  <div class="dash-wrap">
+    <div class="dash-top">
+      <div>
+        <h2>Delegate tracking</h2>
+        <p>Book Drive · Saturday, 25 July 2026</p>
+      </div>
+      <div class="dash-actions">
+        <button class="btn-outline" onclick="exportCSV()">⬇ Export CSV</button>
+        <button class="btn-primary" onclick="openModal()">+ Add delegate</button>
+      </div>
+    </div>
+
+    <div class="metrics">
+      <div class="metric-card t-blue"><div class="m-val" id="mTotal">0</div><div class="m-lbl">Total delegates</div></div>
+      <div class="metric-card"><div class="m-val" id="mRegistered">0</div><div class="m-lbl">Registered</div></div>
+      <div class="metric-card t-green"><div class="m-val" id="mCheckedIn">0</div><div class="m-lbl">Checked in</div></div>
+      <div class="metric-card t-red"><div class="m-val" id="mNoShow">0</div><div class="m-lbl">No-show</div></div>
+      <div class="metric-card t-amber"><div class="m-val" id="mBooks">0</div><div class="m-lbl">Books pledged</div></div>
+      <div class="metric-card t-purple"><div class="m-val" id="mChildren">0</div><div class="m-lbl">Children (groups)</div></div>
+    </div>
+
+    <div class="filter-bar">
+      <input type="text" id="searchInput" placeholder="🔍  Search by name, school or org..." oninput="renderTable()">
+      <select id="filterStatus" onchange="renderTable()">
+        <option value="">All statuses</option>
+        <option value="Registered">Registered</option>
+        <option value="Checked-in">Checked-in</option>
+        <option value="No-show">No-show</option>
+      </select>
+      <select id="filterType" onchange="renderTable()">
+        <option value="">All types</option>
+        <option value="Individual">Individual</option>
+        <option value="School group">School group</option>
+      </select>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>Name</th><th>Contact</th><th>Organisation</th><th>Type</th><th>School info</th><th>Books</th><th>Arrival</th><th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+      <div id="emptyState" class="empty-state">
+        <div class="icon">📋</div>
+        <p>No delegates yet. Share the registration link to get started.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD DELEGATE MODAL -->
+<div class="modal-overlay" id="adminModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Add delegate (admin)</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="field">
+      <label>Delegate type</label>
+      <select id="a_type" onchange="toggleModalSchool()">
+        <option value="Individual">Individual</option>
+        <option value="School group">School group</option>
+      </select>
+    </div>
+    <div class="row2">
+      <div class="field"><label>First name <span class="req">*</span></label><input type="text" id="a_fname" placeholder="First name"></div>
+      <div class="field"><label>Last name <span class="req">*</span></label><input type="text" id="a_lname" placeholder="Last name"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Phone</label><input type="tel" id="a_phone" placeholder="+254 ..."></div>
+      <div class="field"><label>Email</label><input type="email" id="a_email" placeholder="email@..."></div>
+    </div>
+    <div class="field"><label>Organisation <span class="req">*</span></label><input type="text" id="a_org" placeholder="Organisation or school name"></div>
+
+    <div class="modal-school" id="modalSchoolSection">
+      <div class="ms-label">🏫 School group details</div>
+      <div class="field"><label>School name</label><input type="text" id="a_school" placeholder="School name"></div>
+      <div class="field"><label>Teacher / Chaperone</label><input type="text" id="a_teacher" placeholder="Teacher or chaperone name"></div>
+      <div class="row2">
+        <div class="field"><label>No. of children</label><input type="number" id="a_childcount" placeholder="e.g. 30" min="1"></div>
+        <div class="field"><label>Grade / Class</label><input type="text" id="a_grade" placeholder="e.g. Grade 5"></div>
+      </div>
+    </div>
+
+    <div class="row2" style="margin-top:0.75rem">
+      <div class="field"><label>Books pledged</label><input type="number" id="a_books" placeholder="0" min="0"></div>
+      <div class="field"><label>Arrival time</label><input type="time" id="a_arrival"></div>
+    </div>
+    <div class="field">
+      <label>Status</label>
+      <select id="a_status">
+        <option value="Registered">Registered</option>
+        <option value="Checked-in">Checked-in</option>
+        <option value="No-show">No-show</option>
+      </select>
+    </div>
+    <div class="field"><label>Notes</label><textarea id="a_notes" placeholder="Any notes or requirements..."></textarea></div>
+    <div id="adminErr" class="err-msg"></div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="submitAdmin()">Add delegate</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <strong>Book Drive 2026</strong> · Saturday, 25 July · Nairobi, Kenya · Powered by AIESEC
+</footer>
+
+<script>
+  let delegates = [];
+  let delegateType = 'individual';
+  let adminLoggedIn = false;
+  const ADMIN_PASSWORD = 'admin2026';
+
+  // NAV
+  function switchView(view, el) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('view-' + view).classList.add('active');
+    if (el && el.classList && el.classList.contains('nav-tab')) el.classList.add('active');
+    if (view === 'admin') { updateMetrics(); renderTable(); }
+  }
+
+  function showAdminGate() {
+    if (adminLoggedIn) {
+      switchView('admin', null);
+    } else {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('view-admin-login').classList.add('active');
+      setTimeout(() => document.getElementById('adminPwInput').focus(), 100);
+    }
+  }
+
+  function checkAdminLogin() {
+    const pw = document.getElementById('adminPwInput').value;
+    const errEl = document.getElementById('loginErr');
+    if (pw === ADMIN_PASSWORD) {
+      adminLoggedIn = true;
+      document.getElementById('adminPwInput').value = '';
+      errEl.style.display = 'none';
+      switchView('admin', null);
+      updateMetrics();
+      renderTable();
+    } else {
+      errEl.style.display = 'block';
+    }
+  }
+
+  function logoutAdmin() {
+    adminLoggedIn = false;
+    switchView('register', document.querySelectorAll('.nav-tab')[0]);
+  }
+
+  // DELEGATE TYPE
+  function setType(type) {
+    delegateType = type;
+    document.getElementById('typeIndividual').classList.toggle('selected', type === 'individual');
+    document.getElementById('typeSchool').classList.toggle('selected', type === 'school');
+    document.getElementById('schoolSection').style.display = type === 'school' ? 'block' : 'none';
+    document.getElementById('orgFieldWrap').style.display = type === 'school' ? 'none' : 'block';
+    document.getElementById('booksRow').style.display = type === 'school' ? 'none' : 'grid';
+  }
+
+  function toggleOtherGrade(cb) {
+    document.getElementById('r_grade_other').style.display = cb.checked ? 'block' : 'none';
+  }
+
+  function getSelectedGrades() {
+    const checked = [...document.querySelectorAll('input[name="r_grade"]:checked')].map(cb => cb.value);
+    const result = checked.filter(v => v !== 'Other');
+    if (checked.includes('Other')) {
+      const extra = document.getElementById('r_grade_other').value.trim();
+      if (extra) result.push(extra);
+      else result.push('Other');
+    }
+    return result;
+  }
+
+  // REGISTER
+  function submitReg() {
+    const errEl = document.getElementById('regErr');
+    errEl.style.display = 'none';
+    const fn = document.getElementById('r_fname').value.trim();
+    const ln = document.getElementById('r_lname').value.trim();
+    const phone = document.getElementById('r_phone').value.trim();
+    const email = document.getElementById('r_email').value.trim().toLowerCase();
+    const books = parseInt(document.getElementById('r_books').value) || 0;
+    const arrival = document.getElementById('r_arrival').value;
+    const notes = document.getElementById('r_notes').value.trim();
+
+    if (!fn || !ln) { errEl.textContent = 'Please enter your full name.'; errEl.style.display = 'block'; return; }
+    if (!phone) { errEl.textContent = 'Please enter your phone number.'; errEl.style.display = 'block'; return; }
+    if (!email || !email.includes('@')) { errEl.textContent = 'Please enter a valid email address.'; errEl.style.display = 'block'; return; }
+    if (delegates.find(d => d.email === email)) { errEl.textContent = 'This email is already registered.'; errEl.style.display = 'block'; return; }
+
+    let entry = { id: delegates.length + 1, name: fn + ' ' + ln, initials: fn[0].toUpperCase() + ln[0].toUpperCase(), phone, email, books, arrival, notes, status: 'Registered', timestamp: new Date().toLocaleString('en-GB') };
+
+    if (delegateType === 'school') {
+      const school = document.getElementById('r_school').value.trim();
+      const teacher = document.getElementById('r_teacher').value.trim();
+      const childcount = parseInt(document.getElementById('r_childcount').value) || 0;
+      const grades = getSelectedGrades();
+      if (!school) { errEl.textContent = 'Please enter the school name.'; errEl.style.display = 'block'; return; }
+      if (!teacher) { errEl.textContent = 'Please enter the teacher/chaperone name.'; errEl.style.display = 'block'; return; }
+      if (!childcount) { errEl.textContent = 'Please enter the number of children.'; errEl.style.display = 'block'; return; }
+      if (grades.length === 0) { errEl.textContent = 'Please select at least one grade.'; errEl.style.display = 'block'; return; }
+      entry = { ...entry, type: 'School group', org: school, school, teacher, childcount, grade: grades.join(', '), books: 0 };
+    } else {
+      const org = document.getElementById('r_org').value.trim();
+      if (!org) { errEl.textContent = 'Please enter your organisation or school name.'; errEl.style.display = 'block'; return; }
+      entry = { ...entry, type: 'Individual', org };
+    }
+
+    delegates.push(entry);
+    ['r_fname','r_lname','r_phone','r_email','r_org','r_school','r_teacher','r_childcount','r_books','r_arrival','r_notes'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    document.querySelectorAll('input[name="r_grade"]').forEach(cb => cb.checked = false);
+    document.getElementById('r_grade_other').style.display = 'none';
+    document.getElementById('r_grade_other').value = '';
+    setType('individual');
+    const banner = document.getElementById('regSuccess');
+    banner.style.display = 'block';
+    window.scrollTo({ top: document.getElementById('reg-form').offsetTop - 80, behavior: 'smooth' });
+    setTimeout(() => banner.style.display = 'none', 6000);
+  }
+
+  // DELEGATE LOOKUP
+  function lookupDelegate() {
+    const email = document.getElementById('lookupEmail').value.trim().toLowerCase();
+    const errEl = document.getElementById('lookupErr');
+    const profile = document.getElementById('delegateProfile');
+    errEl.style.display = 'none'; profile.style.display = 'none';
+    if (!email) { errEl.textContent = 'Please enter your email address.'; errEl.style.display = 'block'; return; }
+    const d = delegates.find(d => d.email === email);
+    if (!d) { errEl.style.display = 'block'; return; }
+
+    document.getElementById('profileInitials').textContent = d.initials;
+    document.getElementById('profileName').textContent = d.name;
+    document.getElementById('profileOrg').textContent = d.type === 'School group' ? d.school : d.org;
+    document.getElementById('pPhone').textContent = d.phone || '—';
+    document.getElementById('pEmail').textContent = d.email;
+    document.getElementById('pBooks').textContent = d.books ? d.books + ' books' : 'Not specified';
+    document.getElementById('pArrival').textContent = d.arrival || 'Not specified';
+    document.getElementById('pType').textContent = d.type;
+    document.getElementById('pTimestamp').textContent = d.timestamp;
+
+    const sp = document.getElementById('profileStatus');
+    sp.textContent = d.status;
+    sp.className = 'status-pill ' + (d.status === 'Checked-in' ? 's-checkedin' : d.status === 'No-show' ? 's-noshow' : 's-registered');
+
+    if (d.type === 'School group') {
+      document.getElementById('pSchool').textContent = d.school;
+      document.getElementById('pTeacher').textContent = d.teacher;
+      document.getElementById('pChildCount').textContent = d.childcount + ' children';
+      document.getElementById('pGrade').textContent = d.grade;
+      document.getElementById('pSchoolBox').style.display = 'block';
+    } else {
+      document.getElementById('pSchoolBox').style.display = 'none';
+    }
+
+    if (d.notes) { document.getElementById('pNotes').textContent = d.notes; document.getElementById('pNotesWrap').style.display = 'block'; }
+    else { document.getElementById('pNotesWrap').style.display = 'none'; }
+    profile.style.display = 'block';
+  }
+
+  // ADMIN MODAL
+  function toggleModalSchool() {
+    const isSchool = document.getElementById('a_type').value === 'School group';
+    document.getElementById('modalSchoolSection').style.display = isSchool ? 'block' : 'none';
+  }
+  function openModal() { document.getElementById('adminModal').classList.add('open'); }
+  function closeModal() {
+    document.getElementById('adminModal').classList.remove('open');
+    ['a_fname','a_lname','a_phone','a_email','a_org','a_school','a_teacher','a_childcount','a_grade','a_books','a_arrival','a_notes'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    document.getElementById('a_type').value = 'Individual';
+    document.getElementById('a_status').value = 'Registered';
+    document.getElementById('modalSchoolSection').style.display = 'none';
+    document.getElementById('adminErr').style.display = 'none';
+  }
+  function submitAdmin() {
+    const errEl = document.getElementById('adminErr'); errEl.style.display = 'none';
+    const fn = document.getElementById('a_fname').value.trim();
+    const ln = document.getElementById('a_lname').value.trim();
+    const org = document.getElementById('a_org').value.trim();
+    const type = document.getElementById('a_type').value;
+    if (!fn || !ln) { errEl.textContent = "Please enter the delegate's name."; errEl.style.display = 'block'; return; }
+    if (!org) { errEl.textContent = 'Please enter an organisation or school.'; errEl.style.display = 'block'; return; }
+    let entry = {
+      id: delegates.length + 1, name: fn + ' ' + ln, initials: fn[0].toUpperCase() + ln[0].toUpperCase(),
+      phone: document.getElementById('a_phone').value.trim(),
+      email: document.getElementById('a_email').value.trim().toLowerCase(),
+      org, type,
+      books: parseInt(document.getElementById('a_books').value) || 0,
+      arrival: document.getElementById('a_arrival').value,
+      notes: document.getElementById('a_notes').value.trim(),
+      status: document.getElementById('a_status').value,
+      timestamp: new Date().toLocaleString('en-GB')
+    };
+    if (type === 'School group') {
+      entry.school = document.getElementById('a_school').value.trim() || org;
+      entry.teacher = document.getElementById('a_teacher').value.trim();
+      entry.childcount = parseInt(document.getElementById('a_childcount').value) || 0;
+      entry.grade = document.getElementById('a_grade').value.trim();
+    }
+    delegates.push(entry);
+    closeModal(); updateMetrics(); renderTable();
+  }
+
+  function updateStatus(id, val) { const d = delegates.find(d => d.id === id); if (d) d.status = val; updateMetrics(); }
+
+  function updateMetrics() {
+    document.getElementById('mTotal').textContent = delegates.length;
+    document.getElementById('mRegistered').textContent = delegates.filter(d => d.status === 'Registered').length;
+    document.getElementById('mCheckedIn').textContent = delegates.filter(d => d.status === 'Checked-in').length;
+    document.getElementById('mNoShow').textContent = delegates.filter(d => d.status === 'No-show').length;
+    document.getElementById('mBooks').textContent = delegates.reduce((s, d) => s + (d.books || 0), 0);
+    document.getElementById('mChildren').textContent = delegates.filter(d => d.type === 'School group').reduce((s, d) => s + (d.childcount || 0), 0);
+  }
+
+  function renderTable() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const fStatus = document.getElementById('filterStatus').value;
+    const fType = document.getElementById('filterType').value;
+    const filtered = delegates.filter(d =>
+      (!search || d.name.toLowerCase().includes(search) || (d.org||'').toLowerCase().includes(search) || (d.school||'').toLowerCase().includes(search)) &&
+      (!fStatus || d.status === fStatus) &&
+      (!fType || d.type === fType)
+    );
+    const tbody = document.getElementById('tableBody');
+    const empty = document.getElementById('emptyState');
+    if (filtered.length === 0) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+    tbody.innerHTML = filtered.map((d, i) => `
+      <tr>
+        <td style="color:#9CA3AF;font-size:12px">${i+1}</td>
+        <td><div style="font-weight:500">${d.name}</div><div style="font-size:11px;color:#9CA3AF">${d.timestamp}</div></td>
+        <td style="font-size:12px">${d.phone ? `<div>${d.phone}</div>` : ''}${d.email ? `<div style="color:#185FA5">${d.email}</div>` : '<span style="color:#9CA3AF">—</span>'}</td>
+        <td style="font-size:13px">${d.org || d.school || '—'}</td>
+        <td><span class="badge ${d.type === 'School group' ? 'b-school' : 'b-individual'}">${d.type === 'School group' ? '🏫 School' : '🙋 Individual'}</span></td>
+        <td style="font-size:12px">${d.type === 'School group' ? `<div style="color:var(--purple);font-weight:500">${d.school}</div><div style="color:#9CA3AF">${d.childcount} children · ${d.grade}</div><div style="color:#9CA3AF">${d.teacher}</div>` : '<span style="color:#9CA3AF">—</span>'}</td>
+        <td>${d.books ? `<span class="badge b-books">📚 ${d.books}</span>` : '<span style="color:#9CA3AF">—</span>'}</td>
+        <td style="font-size:12px">${d.arrival || '<span style="color:#9CA3AF">—</span>'}</td>
+        <td><select class="status-sel" onchange="updateStatus(${d.id}, this.value)">
+          <option ${d.status==='Registered'?'selected':''}>Registered</option>
+          <option ${d.status==='Checked-in'?'selected':''}>Checked-in</option>
+          <option ${d.status==='No-show'?'selected':''}>No-show</option>
+        </select></td>
+      </tr>
+    `).join('');
+    updateMetrics();
+  }
+
+  function exportCSV() {
+    if (delegates.length === 0) { alert('No delegates to export yet.'); return; }
+    const headers = ['#','Name','Phone','Email','Organisation','Type','School','Teacher/Chaperone','Children','Grade/Class','Books Pledged','Arrival','Notes','Status','Registered At'];
+    const rows = delegates.map(d => [d.id, d.name, d.phone, d.email, d.org||d.school, d.type, d.school||'', d.teacher||'', d.childcount||'', d.grade||'', d.books, d.arrival, '"'+(d.notes||'').replace(/"/g,'""')+'"', d.status, d.timestamp]);
+    const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+    a.download = 'book_drive_delegates_' + new Date().toISOString().slice(0,10) + '.csv';
+    a.click();
+  }
+
+  document.getElementById('adminModal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+  renderTable();
+</script>
+</body>
+</html>
